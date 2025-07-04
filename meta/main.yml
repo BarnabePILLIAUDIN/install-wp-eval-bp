@@ -1,0 +1,8 @@
+galaxy_info:
+  author: Barnabé PILLIAUDIN
+  description: Install WP via a role for ansible course of Master 1
+  license: license (GPL-2.0-or-later, MIT, etc)
+  min_ansible_version: 2.1
+  galaxy_tags: []
+
+dependencies: []

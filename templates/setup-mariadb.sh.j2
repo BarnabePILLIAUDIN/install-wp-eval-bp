@@ -1,0 +1,40 @@
+{% if ansible_facts['os_family'] == 'Debian' %}
+# MariaDB for Debian
+mysqld_safe --datadir=/var/lib/mysql &
+
+echo " Attente du démarrage de MariaDB..."
+sleep 10
+
+echo " Sécurisation de MariaDB..."
+mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'examplerootPW';"
+mysql -uroot -pexamplerootPW -e "DELETE FROM mysql.user WHERE User='';"
+mysql -uroot -pexamplerootPW -e "DROP DATABASE IF EXISTS test;"
+mysql -uroot -pexamplerootPW -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
+mysql -uroot -pexamplerootPW -e "FLUSH PRIVILEGES;"
+
+echo " Création de la base de données WordPress..."
+mysql -uroot -pexamplerootPW -e "CREATE DATABASE wordpress;"
+mysql -uroot -pexamplerootPW -e "CREATE USER 'example'@'localhost' IDENTIFIED BY 'examplePW';"
+mysql -uroot -pexamplerootPW -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'example'@'localhost';"
+mysql -uroot -pexamplerootPW -e "FLUSH PRIVILEGES;"
+
+{% elif ansible_facts['os_family'] == 'RedHat' %}
+# MariaDB for Rocky Linux
+
+echo " Waiting for MariaDB to start..."
+sleep 10
+
+echo " Securing MariaDB..."
+mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'examplerootPW';"
+mysql -uroot -pexamplerootPW -e "DELETE FROM mysql.user WHERE User='';"
+mysql -uroot -pexamplerootPW -e "DROP DATABASE IF EXISTS test;"
+mysql -uroot -pexamplerootPW -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
+mysql -uroot -pexamplerootPW -e "FLUSH PRIVILEGES;"
+
+echo " Creating WordPress database..."
+mysql -uroot -pexamplerootPW -e "CREATE DATABASE wordpress;"
+mysql -uroot -pexamplerootPW -e "CREATE USER 'example'@'localhost' IDENTIFIED BY 'examplePW';"
+mysql -uroot -pexamplerootPW -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'example'@'localhost';"
+mysql -uroot -pexamplerootPW -e "FLUSH PRIVILEGES;"
+
+{% endif %}

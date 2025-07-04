@@ -1,0 +1,11 @@
+---
+# handlers file for install-wp-eval-bp
+- name: Restart apache - Ubuntu
+  ansible.builtin.service:
+    name: apache2
+    state: restarted
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: Restart apache - Rocky
+  ansible.builtin.shell: killall httpd && /usr/sbin/httpd -DFOREGROUND
+  when: ansible_facts['os_family'] == "RedHat"
