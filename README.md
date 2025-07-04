@@ -6,8 +6,8 @@ This role has only been testes on ubuntu containers.
 
 ```yaml
 - name: Install WP with role
-  hosts: ubuntu
+  hosts: all
   become: true
   roles:
-  - install-wp-eval-bp
+  - eval-ansible-barnabepilliaudin
 ```
